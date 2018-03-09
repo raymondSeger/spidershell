@@ -5,7 +5,7 @@ counter=0
 turn=0
 default_crawl="0"
 default_threads="10"
-#printf "\e[1;32m"
+
 function banner() {
 
 printf "\e[1;31m╔═╗┌─┐┬┌┬┐┌─┐┬─┐  ╔═╗┬ ┬┌─┐┬  ┬ \n\e[0m"  
@@ -20,10 +20,9 @@ read -p $'\e[1;77mCrawl Depth (Default '$default_crawl'): ' crawl
 crawl="${crawl:-${default_crawl}}"
 read -p $'\e[1;77mThreads (Default '$default_threads'): ' threads
 threads="${threads:-${default_threads}}"
-#printf "\e[0m"
-#printf "\n \e[0;101m"
+
 printf "\e[101m[*] Spider Shell is \e[5mrunning\e[25m, please wait... \e[0m \n"
-#printf "\e[0m \n"
+
 wget -q $site -O - | tr "\t\r\n'" '   "' | grep -i -o '<a[^>]\+href[ ]*=[ \t]*"\(ht\|f\)tps\?:[^"]\+"' | sed -e 's/^.*"\([^"]\+\)".*$/\1/g' > spider.url.$turn
 let counter++
 
