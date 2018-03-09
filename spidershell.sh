@@ -22,7 +22,7 @@ read -p $'\e[1;77mThreads (Default '$default_threads'): ' threads
 threads="${threads:-${default_threads}}"
 
 printf "\e[101m[*] Spider Shell is \e[5mrunning\e[25m, please wait... \e[0m \n"
-
+start="$(date -u +%s)"
 wget -q $site -O - | tr "\t\r\n'" '   "' | grep -i -o '<a[^>]\+href[ ]*=[ \t]*"\(ht\|f\)tps\?:[^"]\+"' | sed -e 's/^.*"\([^"]\+\)".*$/\1/g' > spider.url.$turn
 let counter++
 
@@ -34,7 +34,10 @@ while [[ "$crawl" -gt "$counter" ]]; do
   spider
   let counter++
 done
+end="$(date -u +%s)"
+duration="$(($end-$start))"
 cat spider.url* | uniq > urlfound.txt
 rm -rf spider.url*
-printf "\e[1;77m\nLinks found: $(wc -l urlfound.txt) \e[0m \n" 
-
+printf "\e[1;77m\nLinks found: $(wc -l urlfound.txt | tr -cd [:digit:]) \e[0m \n" 
+printf "\e[1;77mSaved on: urlfound.txt \e[0m \n"
+printf "\e[1;77mTime Elapsed: $duration seconds \e[0m \n"
